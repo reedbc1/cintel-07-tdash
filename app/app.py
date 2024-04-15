@@ -1,16 +1,20 @@
 import seaborn as sns
 from faicons import icon_svg
 
+# importing shiny packages
 from shiny import reactive
 from shiny.express import input, render, ui
 import palmerpenguins 
 
 df = palmerpenguins.load_penguins()
 
+# Create title at top of page
 ui.page_opts(title="Penguins dashboard", fillable=True)
 
 
+# Create sidebar
 with ui.sidebar(title="Filter controls"):
+    # user input
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
     ui.input_checkbox_group(
         "species",
@@ -19,6 +23,7 @@ with ui.sidebar(title="Filter controls"):
         selected=["Adelie", "Gentoo", "Chinstrap"],
     )
     ui.hr()
+    # text links
     ui.h6("Links")
     ui.a(
         "GitHub Source",
@@ -48,12 +53,15 @@ with ui.sidebar(title="Filter controls"):
     )
 
 
+# putting elements on the same row
 with ui.layout_column_wrap(fill=False):
+    # creating value boxes
     with ui.value_box(showcase=icon_svg("earlybirds")):
         "Number of penguins"
 
         @render.text
         def count():
+            # calls filtered_df() to get fitered dataframe (see bottom function)
             return filtered_df().shape[0]
 
     with ui.value_box(showcase=icon_svg("ruler-horizontal")):
@@ -71,7 +79,9 @@ with ui.layout_column_wrap(fill=False):
             return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
 
 
+# putting elements on the same row
 with ui.layout_columns():
+    # creating value boxes
     with ui.card(full_screen=True):
         ui.card_header("Bill length and depth")
 
@@ -101,7 +111,7 @@ with ui.layout_columns():
 
 #ui.include_css(app_dir / "styles.css")
 
-
+# returns filtered dataframe
 @reactive.calc
 def filtered_df():
     filt_df = df[df["species"].isin(input.species())]
