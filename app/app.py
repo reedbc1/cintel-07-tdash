@@ -9,7 +9,7 @@ import palmerpenguins
 df = palmerpenguins.load_penguins()
 
 # Create title at top of page
-ui.page_opts(title="Penguins dashboard", fillable=True)
+ui.page_opts(title="Palmer Penguins dashboard", fillable=True)
 
 
 # Create sidebar
@@ -95,7 +95,7 @@ with ui.layout_columns():
             )
 
     with ui.card(full_screen=True):
-        ui.card_header("Penguin da")
+        ui.card_header("Penguin data")
 
         @render.data_frame
         def summary_statistics():
